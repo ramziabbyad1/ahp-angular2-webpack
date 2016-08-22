@@ -1,6 +1,6 @@
 ## angular2-seed
 
-A simple starter project demonstrating the basic concepts of Angular 2.
+An interactive implementation of Saaty's Analytic Hierarchy Process using Angular2 Typescript with D3.
 
 
 ### Usage
