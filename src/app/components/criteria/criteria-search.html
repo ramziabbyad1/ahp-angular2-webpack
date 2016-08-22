@@ -1,0 +1,12 @@
+<div id="search-component">
+  <h4>Parent Search</h4>
+	<input #searchBox id="search-box" (keyup)="search(searchBox.value)" 
+		value="{{childCriterium.parent_name}}"/>
+  <div>
+    <div *ngFor="let criterium of criteria | async"
+         (click)="chooseParent(criterium)" class="search-result" >
+      {{criterium.name}}
+    </div>
+  </div>
+</div>
+

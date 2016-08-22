@@ -1,0 +1,21 @@
+:host .node rect {
+  fill: #999;
+}
+
+:host .node text {
+  font: 10px sans-serif;
+}
+
+:host .node--internal circle {
+  fill: #555;
+}
+
+:host .node--internal text {
+}
+
+:host .link {
+  fill: none;
+  stroke: #555;
+  stroke-opacity: 0.4;
+  stroke-width: 1.5px;
+}

@@ -1,0 +1,19 @@
+<div *ngIf="criterium">
+  <h2>{{criterium.name}} details!</h2>
+  <div><label>id: </label>{{criterium.id}}</div>
+  <div>
+    <label>name: </label>
+    <input [(ngModel)]="criterium.name" placeholder="name"/>
+  </div>
+	<criteria-search [(childCriterium)]="criterium"></criteria-search>
+  <div>
+			<label>parent id: </label>
+			{{criterium.parent_id}}
+	</div>
+  <div>
+    <label>parent name: </label>
+		<input [(ngModel)]="criterium.parent_name" placeholder="parent name"/>
+  </div>
+  <button (click)="goBack()">Back</button>
+  <button (click)="save()">Save</button>
+</div>

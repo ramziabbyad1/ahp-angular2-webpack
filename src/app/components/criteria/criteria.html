@@ -1,0 +1,22 @@
+<h2>My Criteria</h2>
+<ul class="criteria">
+  <li *ngFor="let criterium of criteria" (click)="onSelect(criterium)" [class.selected]="criterium === selectedCriterium">
+    <span class="criterium-element">
+      <span class="badge">{{criterium.id}}</span> {{criterium.name}}
+    </span>
+    <button class="delete-button" (click)="deleteCriterium(criterium, $event)">Delete</button>
+  </li>
+</ul>
+
+<div class="error" *ngIf="error">{{error}}</div>
+<button (click)="addCriterium()">Add New Criterium</button>
+<div *ngIf="addingCriterium">
+  <criterium-detail (close)="close($event)"></criterium-detail>
+</div>
+
+<div *ngIf="selectedCriterium">
+  <h2>
+    {{selectedCriterium.name | uppercase}} is my criterium
+  </h2>
+  <button (click)="gotoDetail()">View Details</button>
+</div>
