@@ -1,0 +1,23 @@
+<div id="comparison-container">
+	<div class="comparison-column">
+	<h2>My Comparisons</h2>
+	<ul class="comparison-groups">
+		<li *ngFor="let group of groups">
+			<h3 *ngIf="group.pairs.length">Group: {{group.groupName}}</h3>
+				<table>
+					<tr *ngFor="let pair of group.pairs" >
+						<td>	{{pair.left.name}} </td>
+						<td>		
+							<input type="range" min="1" max="17" 
+								step="1" value="9" [(ngModel)]="pair.score"/>
+						</td>
+						<td> {{pair.right.name}} </td>
+					</tr>
+				</table>
+		</li>
+	</ul>
+	</div>
+	<div class="comparison-column">
+		<button (click)="onCompute()">Compute weights</button>
+	</div>
+</div>

@@ -18,6 +18,7 @@ import { XHRBackend } from '@angular/http';
 import { InMemoryBackendService, SEED_DATA } from 'angular2-in-memory-web-api';
 import { InMemoryData }               from './in-memory-db/in-memory-data';
 import { Criteria }      from './components/criteria/criteria';
+import { Comparisons }      from './components/criteria/comparisons';
 import { CriteriumDetail }  from './components/criteria/criterium-detail';
 import { CriteriaService }          from './services/criteria-service';
 import { CriteriaSearch }          from './components/criteria/criteria-search';
@@ -31,6 +32,7 @@ import { CriteriaSearch }          from './components/criteria/criteria-search';
 		RepoDetail, 
 		Home,
 		Criteria,
+		Comparisons,
 		CriteriaSearch,
 		CriteriumDetail
 	],

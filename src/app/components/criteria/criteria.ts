@@ -23,7 +23,6 @@ export class Criteria implements OnInit {
 	){}
 
 	getCriteria(): void {
-		console.log("hi");
 		this.criteriaService
 				.getCriteria()
 				.then(criteria => this.criteria = criteria)
