@@ -12,6 +12,7 @@
 								step="1" value="9" [(ngModel)]="pair.score"/>
 						</td>
 						<td> {{pair.right.name}} </td>
+						<td> {{CONVERSIONS[pair.score] | number:'.2-2'}} </td>
 					</tr>
 				</table>
 		</li>

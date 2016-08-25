@@ -1,0 +1,20 @@
+<hierarchy></hierarchy>
+
+<div *ngIf="matrices">
+<div *ngFor="let matrix of matrices">
+	<table class="pwc-matrix">
+		<tr>
+			<td></td>
+			<td *ngFor="let name of matrix.names">{{name}}</td>
+		</tr>
+		<tr *ngFor="let row of matrix.data; let i=index">
+			<td>{{matrix.names[i]}}</td>
+			<td *ngFor="let val of row">
+				{{val | number:'.0-2'}}
+			</td>
+		</tr>
+	</table>
+	<pie-chart [matrix]="matrix"></pie-chart>
+</div>
+</div>
+<button (click)="goBack()">Back</button>

@@ -22,6 +22,9 @@ import { Comparisons }      from './components/criteria/comparisons';
 import { CriteriumDetail }  from './components/criteria/criterium-detail';
 import { CriteriaService }          from './services/criteria-service';
 import { CriteriaSearch }          from './components/criteria/criteria-search';
+import { MatrixService }          from './services/matrix-service';
+import { ComparisonResults }      from './components/criteria/comparison-results';
+import { PieChart }								from './components/charts/pie-chart';
 
 @NgModule({
   declarations: [
@@ -34,12 +37,15 @@ import { CriteriaSearch }          from './components/criteria/criteria-search';
 		Criteria,
 		Comparisons,
 		CriteriaSearch,
-		CriteriumDetail
+		CriteriumDetail,
+		ComparisonResults,
+		PieChart
 	],
   imports     : [BrowserModule, FormsModule, HttpModule, RouterModule.forRoot(rootRouterConfig)],
   providers   : [
 		Github, 
 		CriteriaService,
+		MatrixService,
 		{provide: LocationStrategy, useClass: HashLocationStrategy},
 		{provide: XHRBackend, useClass: InMemoryBackendService},
 		{provide: SEED_DATA, useClass: InMemoryData}

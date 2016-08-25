@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {Hierarchy} from '../components/hierarchy/hierarchy';
+import {About} from '../about/about';
 @Component({
   selector: 'home',
-	directives: [Hierarchy],
+	directives: [About],
   styleUrls: ['./home.css'],
   templateUrl: './home.html'
 })

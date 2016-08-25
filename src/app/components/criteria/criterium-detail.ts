@@ -34,6 +34,7 @@ export class CriteriumDetail implements OnInit {
       } else {
         this.navigated = false;
         this.criterium = new Criterium();
+				this.criterium.changed = true;
       }
     });
   }

@@ -30,4 +30,6 @@ import * as _ from 'lodash'
  */
 declare module 'numeric' {
   export function eig(A: number[][]): any;
+	export function transpose(A: number[][]): number[][];
+	export function sum(x: number[]): number;
 }

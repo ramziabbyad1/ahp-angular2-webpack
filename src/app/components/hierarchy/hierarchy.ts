@@ -15,50 +15,23 @@ import * as D3 from 'd3';
 })
 
 export class Hierarchy {
-	/*Encapsulated variables for interfacing with d3*/
+	/* Encapsulated variables for interfacing with d3
+	 * TODO: A lot of these are missing types, need to improve Type Definitions
+	 * */
 	private host;
 	private svg;
 	private margin;
-	private height;
+	private canvasHeight: number;
+	private canvasWidth: number;
+	private boxWidth: number;
+	private boxHeight: number;
 	private htmlElement: HTMLElement;
+	private nodes;
 	private root;
+	private hierarchy;
+	private containerGroup;
 	@Input() private criteria: Criterium[];
 	error: any;
-/*	private root: any =
-		{
-		  "name": "Eve",
-		  "children": [
-		    {
-		      "name": "Cain"
-		    },
-		    {
-		      "name": "Seth",
-		      "children": [
-		        {
-		          "name": "Enos"
-		        },
-		        {
-		          "name": "Noam"
-		        }
-		      ]
-		    },
-		    {
-		      "name": "Abel"
-		    },
-		    {
-		      "name": "Awan",
-		      "children": [
-		        {
-		          "name": "Enoch"
-		        }
-		      ]
-		    },
-		    {
-		      "name": "Azura"
-		    }
-		  ]
-		};
-	 */	
 
 	/*Get the element reference from angular
 	 * and interface with D3*/
@@ -69,41 +42,67 @@ export class Hierarchy {
 		this.host = D3.select(this.element.nativeElement);
 	}
 
-	getCriteria(): void {
-		this.criteriaService
+	getRoot(): Promise<void> {
+		return this.criteriaService
 				.getCriteria()
 				.then(criteria => {
 					this.root = D3.stratify()
 							.id(d => d.id)
 							.parentId(d => d.parent_id)
 							(criteria);
-					this.setup(this.root);
+							console.log('finish get');
 				})
 				.catch(error => this.error = error);
 	}	
 
 	ngOnInit(): void {
-		console.log('oninit hierarchy');
-		this.getCriteria();
+		this.setup();
+		this.getRoot()
+				.then(() => {
+								console.log('start render');
+								this.render()
+
+				});
+		console.log('passed criteria service');
 	}
 
-	private setup(root: any): void {
-		let height: number = 600;
-		let width: number = 960;
+	private render() {
+		this.buildSvg();
+		this.buildHierarchy();
+		this.buildPaths();
+		this.buildNodes();
+	}
+
+	/*
+	 * TODO: Add margins to boxes
+	 * */
+	private setup(): void {
+		this.canvasHeight = 600;
+		this.canvasWidth = 1000;
+
+		this.boxHeight = 50;
+		this.boxWidth = 50;
+		
+	}
+
+	private buildSvg(): void {
 		this.svg = this.host.append("svg")
-								.attr("width", width)
-								.attr("height", height);
+								.attr("width", this.canvasWidth)
+								.attr("height", this.canvasHeight);
 
-		let g: any = this.svg.append("g").attr("transform", "translate(0,40)");
-		let hierarchy = D3.hierarchy(root);
+		this.containerGroup =this.svg.append("g").attr("transform", "translate(0,60)");
+	}
 
-		let tree= D3.tree().size([width, height - 160]);
-		tree(hierarchy);
+	private buildHierarchy(): void {
+		this.hierarchy = D3.hierarchy(this.root);
 
-		let boxHeight: number = 50;
-		let boxWidth: number = 100;
-		let link = g.selectAll(".link")
-					.data(hierarchy.descendants().slice(1))
+		let tree= D3.tree().size([this.canvasWidth, this.canvasHeight - 160]);
+		tree(this.hierarchy);
+	}
+
+	private buildPaths(): void {
+		this.containerGroup.selectAll(".link")
+					.data(this.hierarchy.descendants().slice(1))
 					.enter().append("path")
 						.attr("class", "link")
 						.attr("d", 
@@ -113,26 +112,31 @@ export class Hierarchy {
 								+ " " + (d.x + d.parent.x) / 2 + "," + d.parent.y
 								+ " " + d.parent.x             + "," + d.parent.y
 						);
-		
-		let node = g.selectAll(".node")
-				.data(hierarchy.descendants())
+	
+	}
+
+	private buildNodes(): void {
+		this.nodes = this.containerGroup.selectAll(".node")
+				.data(this.hierarchy.descendants())
 			.enter().append("g")
 				.attr("class", 
 							d => "node node--internal" )
 				.attr("transform", d => "translate(" + d.x + "," + d.y + ")");
 
-		node.append("rect")
-			.attr("x", -boxWidth / 2)
-			.attr("y", -boxHeight / 2)
-			.attr("width", boxWidth)
-			.attr("height", boxHeight);
+		this.nodes.append("rect")
+			.attr("x", -this.boxWidth / 2)
+			.attr("y", -this.boxHeight / 2)
+			.attr("width", this.boxWidth)
+			.attr("height", this.boxHeight);
 
-		node.append("text")
+		this.nodes.append("text")
 			.attr("font-family", "sans-serif")
 			.attr("font-size", "14px")
 			.attr("fill", "white")
 			.style("text-anchor", "middle")
-			.text(d => d.data.data.name);
+			.style("word-wrap", "break-word")
+			.style("width", 100)
+			.text(d => d.data.data.name + (d.data.data.weight || ""));
 	}
 
 }
