@@ -35,13 +35,16 @@ export class Comparisons implements OnInit {
 		private matrixService: MatrixService,
 		private router: Router
 	){
+		this.calculator = new Calculator();
 		this.groups = [];
 		this.groups_obj = {};
-		this.calculator = new Calculator();
 	}
 	//this works okay, but if you use only matrices with names replaced by criteria it will be best
 	ngOnInit() {
-		console.log(this.matrices);
+		console.log('oninit');
+		console.log('oninit');
+		console.log('oninit');
+		console.log('oninit');
 		this.matrixService
 			.getMatrices()
 			.then(matrices => {
@@ -96,9 +99,6 @@ export class Comparisons implements OnInit {
 		criteria.forEach(c => c.changed = false);
 		let criterium = criteria[0];
 		criterium.changed = false;
-		this.criteriaService
-			.save(criterium)
-			.catch(e => this.error = e);
 
 	}
 
@@ -233,14 +233,21 @@ export class Comparisons implements OnInit {
           this.goToResults(matrices);
         })
         .catch(error => this.error = error); // TODO: Display error message
+		this.criteriaService
+			.save(this.criteria[0])
+			.catch(e => this.error = e);
   }
 
 	onCompute(): void {
+		console.log('computing computing computing');
 		this.loadMatrices();
 		console.log(this.matrices)
 		this.calculator.calculateAll(this.matrices);	
 		console.log(this.groups);
 		this.save();
+		this.groups = [];
+		this.groups_obj = {};
+		this.matrices = [];
 	}
 /*
 	private mergeMatricesCriteria(
