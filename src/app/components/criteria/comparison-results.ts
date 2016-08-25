@@ -12,7 +12,8 @@ import {Matrices}	from '../../models/matrices';
 @Component({
 	selector: 'comparison-results',
 	directives: [Hierarchy, PieChart],
-	templateUrl: 'comparison-results.html'
+	templateUrl: 'comparison-results.html',
+	styleUrls: ['comparison-results.css']
 })
 
 export class ComparisonResults implements OnInit {

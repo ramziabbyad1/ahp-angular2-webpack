@@ -1,6 +1,9 @@
+<h2>Comaprison Results</h2>
+<p>If you hover over the donut chart, you can see the computed weights.</p>
 <hierarchy></hierarchy>
 <div *ngIf="matrices">
 <div *ngFor="let matrix of matrices.matrices">
+	<h3>Pairwise comparison matrix</h3>
 	<table class="pwc-matrix">
 		<tr>
 			<td></td>
@@ -13,6 +16,7 @@
 			</td>
 		</tr>
 	</table>
+	<h3>Calculated Weights</h3>
 	<pie-chart [matrix]="matrix"></pie-chart>
 </div>
 </div>

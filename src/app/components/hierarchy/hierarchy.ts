@@ -9,6 +9,8 @@ import * as D3 from 'd3';
 	selector: 'hierarchy',
 	styleUrls: ['./hierarchy.css'],
 	template: `
+		<h2>Sample Hierarchy</h2>
+		<p>Click criteria tab to edit</p>
 		<ng-content></ng-content>
 	`,
 	directives: []

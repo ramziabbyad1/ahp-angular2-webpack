@@ -1,4 +1,7 @@
 <h2>My Criteria</h2>
+<p>Add, edit, delete, or view details using the buttons.  You can use the search box to conveniently search for parents of criteria you wish to add. </p>
+<p><em>AHP</em> works best if you keep the number of criteria in each group below five.</p>
+<p>When you are done, click comparisons to start comparing your criteria.</p>
 <ul class="criteria">
   <li *ngFor="let criterium of criteria" (click)="onSelect(criterium)" [class.selected]="criterium === selectedCriterium">
     <span class="criterium-element">
