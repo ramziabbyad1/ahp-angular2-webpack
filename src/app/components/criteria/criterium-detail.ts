@@ -15,6 +15,7 @@ import {CriteriaSearch} from './criteria-search';
 
 export class CriteriumDetail implements OnInit {
 	@Input() criterium: Criterium;
+	private decision: Criterium;
 	@Output() close = new EventEmitter();
 	error: any;
 	navigated = false; //true if navigated here
@@ -34,7 +35,15 @@ export class CriteriumDetail implements OnInit {
       } else {
         this.navigated = false;
         this.criterium = new Criterium();
-				this.criterium.changed = true;
+				this.criteriaService.getCriterium(11)
+					.then(criterium => {
+									this.decision = criterium;
+									this.decision.changed = true;
+					})
+					.then(() =>
+						this.criteriaService.save(this.decision)		 
+					)
+        	.catch(error => this.error = error); // TODO: Display error message
       }
     });
   }

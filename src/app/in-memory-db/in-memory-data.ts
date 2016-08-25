@@ -1,3 +1,5 @@
+import * as numeric from 'numeric';
+
 export class InMemoryData {
 	createDb() {
 		let criteria = [
@@ -25,4 +27,6 @@ export class InMemoryData {
 				matrices: []
 		};
 	}
+
+	
 }

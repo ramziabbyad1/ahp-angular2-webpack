@@ -53,7 +53,6 @@ export class Criteria implements OnInit {
 	}
 
 	ngOnInit(): void {
-		console.log('oninit criteria list');
 		this.getCriteria();
 	}
 

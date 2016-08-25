@@ -7,6 +7,7 @@ import {Hierarchy} from '../../components/hierarchy/hierarchy';
 import {PieChart} from '../../components/charts/pie-chart';
 import {MatrixService} from '../../services/matrix-service';
 import {Matrix}	from '../../models/matrix';
+import {Matrices}	from '../../models/matrices';
 
 @Component({
 	selector: 'comparison-results',
@@ -16,7 +17,7 @@ import {Matrix}	from '../../models/matrix';
 
 export class ComparisonResults implements OnInit {
 	
-	@Input() matrices: Matrix[];
+	@Input() matrices: Matrices;
 	@Output() close = new EventEmitter();
 	private navigated=false;
 	error: any;
@@ -32,14 +33,14 @@ export class ComparisonResults implements OnInit {
 	ngOnInit(): void {
     this.route.params.forEach((params: Params) => {
       if (params['naved'] !== undefined) {
-				console.log('did nav');
         let id = +params['naved'];
         this.navigated = true;
 				this.matrixService.getMatrices()
-						.then(matrices => this.matrices=matrices)
+						.then(matrices => {
+										this.matrices=matrices;
+						})
 						.catch(e => this.error = e);			
       } else {
-				console.log('didnt nav');
         this.navigated = false;
       }
 		});

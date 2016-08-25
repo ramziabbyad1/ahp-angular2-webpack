@@ -4,6 +4,7 @@ import { Headers, Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { Matrix } from '../models/matrix';
+import { Matrices } from '../models/matrices';
 
 @Injectable()
 export class MatrixService {
@@ -11,13 +12,11 @@ export class MatrixService {
   private matrixUrl = 'app/matrices';  // URL to web api
   constructor(private http: Http) { }
 
-  getMatrices(): Promise<Matrix[]> {
+  getMatrices(): Promise<Matrices> {
     return this.http.get(this.matrixUrl)
                .toPromise()
                .then(response => {
-											 console.log('response from matrix service');
-											 console.log(response.json().data);
-											 return response.json().data[0] as Matrix[];
+											 return response.json().data[0] as Matrices;
 							 })
                .catch(this.handleError);
   }
@@ -26,13 +25,22 @@ export class MatrixService {
 	 * Could break it into puts for each matrix but keep batched for now
 	 * */
 
-  save(matrices: Matrix[]): Promise<Matrix[]>  {
-		console.log('saving matrices in service');
+  save(matrices: Matrices): Promise<Matrices>  {
 	 	return this.post(matrices);
   }
 
+  delete(id: number): Promise<Response> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let url = `${this.matrixUrl}/${id}`;
+    return this.http
+               .delete(url, {headers: headers})
+               .toPromise()
+               .catch(this.handleError);
+  }
+
   // Add new Criterium
-  private post(matrices: Matrix[]): Promise<Matrix[]> {
+  private post(matrices: Matrices): Promise<Matrices> {
     let headers = new Headers({
       'Content-Type': 'application/json'});
     return this.http
@@ -43,8 +51,6 @@ export class MatrixService {
 								)
                .toPromise()
                .then(res => {
-											 console.log('data from post');
-											 console.log(res.json().data);
 											 return res.json().data;
 							 })
                .catch(this.handleError);

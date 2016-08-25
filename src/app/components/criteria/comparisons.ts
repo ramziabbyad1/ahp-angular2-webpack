@@ -7,6 +7,7 @@ import {Pair} from '../../models/pair';
 import {CriteriaService} from '../../services/criteria-service';
 import {Calculator}  from '../../calculators/calculator';
 import {Matrix}				from '../../models/matrix';
+import {Matrices}				from '../../models/matrices';
 import {MatrixService} from '../../services/matrix-service';
 
 @Component({
@@ -21,7 +22,7 @@ export class Comparisons implements OnInit {
 	private groups_obj: any;
 	@Input() private groups: Group[];
 	private calculator: Calculator;
-	private matrices: Matrix[];
+	@Input() private matrices: Matrices;
 	private CONVERSIONS = {
 		'1': 1/9, '2': 1/8, '3': 1/7, '4': 1/6, '5': 1/5, '6': 1/4, '7': 1/3,
 		'8': 1/2, '9': 1, '10': 2, '11': 3, '12': 4, '13': 5, '14': 6, '15': 7,
@@ -36,49 +37,30 @@ export class Comparisons implements OnInit {
 		private router: Router
 	){
 		this.calculator = new Calculator();
-		this.groups = [];
-		this.groups_obj = {};
 	}
 	//this works okay, but if you use only matrices with names replaced by criteria it will be best
 	ngOnInit() {
-		console.log('oninit');
-		console.log('oninit');
-		console.log('oninit');
-		console.log('oninit');
+		this.groups = [];
+		this.groups_obj = {};
 		this.matrixService
 			.getMatrices()
 			.then(matrices => {
-				console.log('array of matrices from service');
-				console.log(matrices);
-				//if (matrices) {
-					this.matrices = matrices  || [];
-				//}
-				console.log(this.matrices);
+
+					this.matrices = matrices  || new Matrices();
+
 					this.criteriaService
 						.getCriteria()
 						.then(criteria => {
 							this.criteria = criteria;
-							console.log('this.criteria');
-							console.log(this.criteria);
-							console.log('comparisonsSaved');
-							console.log(this.comparisonsSaved);
-							console.log('this.matrices');
-							console.log(this.matrices);
 							let changed = this.criteriaChanged(this.criteria);
-							console.log('changed');
-							console.log(changed);
 							/*
 							 * If changed, clear all comparisons, otherwise use saved matrices
 							 * */
-							if (
-								changed
-							) {
-								console.log('first branch');
-								this.matrices = [];
+							if (changed) {
+								this.matrices.matrices = [];
 								this.groupBy(this.criteria);
 							} 
 							else {
-								console.log('second branch');
 								this.constructGroupsFromMatrices();
 							}
 							this.clearCriteria(this.criteria);
@@ -107,8 +89,8 @@ export class Comparisons implements OnInit {
 	 * */
 
 	private constructGroupsFromMatrices(): void {
-		console.log('constructing groups from matrices');
-		for(let matrix of this.matrices) {
+		this.groups = [];
+		for(let matrix of this.matrices.matrices) {
 			let group = new Group(matrix.groupName);
 			group.dimension = matrix.names.length;
 			for(let i = 0; i < matrix.names.length; i++) {
@@ -146,6 +128,7 @@ export class Comparisons implements OnInit {
 	 * */
 
 	private pairwiseGroup(groups_obj: any): void {
+		this.groups = [];
 		for (let key in groups_obj) {
 			if (groups_obj[key].length > 1) {
 				let criteria: Criterium[] = groups_obj[key];
@@ -162,6 +145,7 @@ export class Comparisons implements OnInit {
 	}
 
 	private loadMatrices(): void {
+		this.matrices = new Matrices();
 		this.groups.forEach(
 			(g, groupIndex) => this.loadUpperTriangle(g, groupIndex)
 		);
@@ -178,18 +162,14 @@ export class Comparisons implements OnInit {
 	 * TODO: this logic looks like it belongs in Matrix
 	 * */
 	private loadUpperTriangle(g: Group, groupIndex: number) {
-		console.log('inside upper triangle');
-		console.log(g);
-		console.log(groupIndex);
-		console.log(this.matrices);
-		this.matrices.push({
+		this.matrices.matrices.push({
 			groupName: g.groupName,
 			names: [],
 			data: []
 		});
 		let dim = g.dimension;
 		let pair_index = 0;
-		let matrix: Matrix = this.matrices[groupIndex];
+		let matrix: Matrix = this.matrices.matrices[groupIndex];
 		if(g.pairs.length > 0) {
 			matrix.names.push(g.pairs[0].left.name);
 		}
@@ -214,9 +194,9 @@ export class Comparisons implements OnInit {
 	}
 
 	private invertUpperTriangle(): void {
-		for(let matrixIndex = 0; matrixIndex < this.matrices.length; matrixIndex++)
+		for(let matrixIndex = 0; matrixIndex < this.matrices.matrices.length; matrixIndex++)
 		{
-			let matrix: number[][] =this.matrices[matrixIndex].data;
+			let matrix: number[][] =this.matrices.matrices[matrixIndex].data;
 			for(let row = 0; row < matrix.length; row++) {
 				for(let col = 0; col < row; col++) {
 					matrix[row][col] = 1/matrix[col][row];
@@ -227,37 +207,27 @@ export class Comparisons implements OnInit {
 
   save(): void {
     this.matrixService
-        .save(this.matrices)
-        .then(matrices => {
-          this.matrices = matrices; // saved criterium, w/ id if new
-          this.goToResults(matrices);
-        })
-        .catch(error => this.error = error); // TODO: Display error message
+				.delete(1)
+				.then(() =>
+        	this.matrixService.save(this.matrices)
+        		.then(matrices => {
+        		  this.matrices = matrices; // saved criterium, w/ id if new
+        		  this.goToResults(matrices);
+        		})
+					)
+        	.catch(error => this.error = error); // TODO: Display error message
 		this.criteriaService
 			.save(this.criteria[0])
 			.catch(e => this.error = e);
   }
 
 	onCompute(): void {
-		console.log('computing computing computing');
 		this.loadMatrices();
-		console.log(this.matrices)
-		this.calculator.calculateAll(this.matrices);	
-		console.log(this.groups);
+		this.calculator.calculateAll(this.matrices.matrices);	
 		this.save();
-		this.groups = [];
-		this.groups_obj = {};
-		this.matrices = [];
 	}
-/*
-	private mergeMatricesCriteria(
-		matrices: Matrix[], 
-		criteria: Criterium[]
-	): void {
-		
-	}*/
 
-	goToResults(matrices: Matrix[]): void {
+	goToResults(matrices: Matrices): void {
 		this.router.navigate(['/results', true]);
 	}
 

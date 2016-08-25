@@ -48,10 +48,6 @@ export class PieChart implements OnInit
 	}
 
 	buildSvg(): void {
-		console.log('matrix bound to chart');
-		console.log('matrix bound to chart');
-		console.log('matrix bound to chart');
-		console.log(this.matrix);
 		this.svg = this.host.select('.chart')
 			.append('svg');
 		this.g = this.svg
@@ -59,8 +55,6 @@ export class PieChart implements OnInit
 			.attr('height', this.height)
 			.append('g')
 			.attr('transform', 'translate(' + (this.width/2) + ',' + (this.height/2) + 			')');
-		console.log('D3.svg');
-		console.log(D3.svg);
 		let arc = D3.arc()
     	.innerRadius(this.radius - this.donutWidth)
     	.outerRadius(this.radius);
@@ -107,8 +101,6 @@ export class PieChart implements OnInit
         .style('left', (D3.event.pageX + 10) + 'px');
     });
     */
-		console.log('this.colorScale.domain()');
-		console.log(this.colorScale.domain());
     var legend = this.g.selectAll('.legend')
       .data(this.colorScale.domain())
       .enter()
@@ -121,8 +113,6 @@ export class PieChart implements OnInit
         var vert = i * height - offset;
         return 'translate(' + horz + ',' + vert + ')';
       });
-		console.log('this.colorScale');
-		console.log(this.colorScale);
     legend.append('rect')
       .attr('width', this.legendRectSize)
       .attr('height', this.legendRectSize)                                   

@@ -50,7 +50,6 @@ export class Hierarchy {
 							.id(d => d.id)
 							.parentId(d => d.parent_id)
 							(criteria);
-							console.log('finish get');
 				})
 				.catch(error => this.error = error);
 	}	
@@ -59,11 +58,9 @@ export class Hierarchy {
 		this.setup();
 		this.getRoot()
 				.then(() => {
-								console.log('start render');
 								this.render()
 
 				});
-		console.log('passed criteria service');
 	}
 
 	private render() {
@@ -78,7 +75,7 @@ export class Hierarchy {
 	 * */
 	private setup(): void {
 		this.canvasHeight = 600;
-		this.canvasWidth = 1000;
+		this.canvasWidth = 800;
 
 		this.boxHeight = 50;
 		this.boxWidth = 50;
