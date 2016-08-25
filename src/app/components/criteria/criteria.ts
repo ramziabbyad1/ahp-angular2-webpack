@@ -45,6 +45,11 @@ export class Criteria implements OnInit {
 				.delete(criterium)
 				.then(res => {
 					this.criteria = this.criteria.filter(c => c !== criterium);
+ 					this.criteria.forEach(c => {
+									if (c.parent_id === criterium.id) {
+										this.deleteCriterium(c, event);
+									}
+					});
 					if (this.selectedCriterium === criterium) {
 						this.selectedCriterium = null;
 					}

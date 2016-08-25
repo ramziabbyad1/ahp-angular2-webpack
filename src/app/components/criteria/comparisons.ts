@@ -107,7 +107,6 @@ export class Comparisons implements OnInit {
 			}
 			this.groups.push(group);
 		}
-		console.log(this.groups);
 	}
 
 	private groupBy(criteria: Criterium[]): void {
