@@ -38,7 +38,7 @@ export class Comparisons implements OnInit {
 	){
 		this.calculator = new Calculator();
 	}
-	//this works okay, but if you use only matrices with names replaced by criteria it will be best
+
 	ngOnInit() {
 		this.groups = [];
 		this.groups_obj = {};

@@ -44,6 +44,10 @@ export class Criteria implements OnInit {
 		this.criteriaService
 				.delete(criterium)
 				.then(res => {
+					this.criteria[0].changed = true;
+					this.criteriaService
+							.save(this.criteria[0])
+							.catch(error => this.error = error);
 					this.criteria = this.criteria.filter(c => c !== criterium);
  					this.criteria.forEach(c => {
 									if (c.parent_id === criterium.id) {
@@ -55,6 +59,7 @@ export class Criteria implements OnInit {
 					}
 				})
 				.catch(error => this.error = error);
+
 	}
 
 	ngOnInit(): void {

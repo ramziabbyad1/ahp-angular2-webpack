@@ -1,0 +1,10 @@
+main { 
+	background-color: white;
+	margin-top: 10px;
+	color: #333333;
+	border-color: #ddd;
+	padding: 10px 15px;
+	border-bottom: 1px solid transparent;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+}
