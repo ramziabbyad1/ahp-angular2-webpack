@@ -19,7 +19,8 @@ export class RepoDetail implements OnInit {
     this.route.params.subscribe(params => {
       this.org = this.router.routerState.parent(this.route).snapshot.params['org'];
       this.repo = params['repo'] || '';
-
+			console.log('this.repo');
+			console.log(this.repo);
       if (this.repo) {
         this.github.getRepoForOrg(this.org, this.repo)
           .subscribe(repoDetails => {

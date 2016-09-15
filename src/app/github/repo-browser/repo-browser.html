@@ -1,6 +1,5 @@
 <h3>GitHub Browser</h3>
 
-<input type="text" #repoName placeholder="Search Github Orgs">
-<button (click)="searchForOrg(repoName.value)">Search Orgs</button>
-
-<router-outlet></router-outlet>
+<input type="text" #fileType placeholder="Search by Language">
+<button (click)="searchUserFiles(fileType.value)">Search Ramzi's Github</button>
+<repo-list [repos]="repos"></repo-list>

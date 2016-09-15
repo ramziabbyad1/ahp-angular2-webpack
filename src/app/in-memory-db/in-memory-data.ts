@@ -1,6 +1,6 @@
-import * as numeric from 'numeric';
+import {InMemoryDbService} from 'angular2-in-memory-web-api';
 
-export class InMemoryData {
+export class InMemoryData implements InMemoryDbService{
 	createDb() {
 		let criteria = [
 			{id: 11, name: 'Decision', parent_name: null, parent_id: null, changed: true},
