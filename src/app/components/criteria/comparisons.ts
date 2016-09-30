@@ -16,6 +16,12 @@ import {MatrixService} from '../../services/matrix-service';
 	styleUrls: ['./comparisons.css']
 })
 
+/*
+ *	TODO: This file is a mess.
+ *	Need to sparate concerns to Matrix class
+ *	This is pending integration with the persistence ORM layer  
+ * */
+
 export class Comparisons implements OnInit {
 	private criteria: Criterium[];	
 	private comparisonsSaved = false;
