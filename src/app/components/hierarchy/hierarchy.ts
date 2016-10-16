@@ -1,4 +1,5 @@
 import {Component, Input, ElementRef} from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import {Criterium} from '../../models/criterium';
 import {CriteriaService} from '../../services/criteria-service';
@@ -34,6 +35,7 @@ export class Hierarchy {
 	private containerGroup;
 	@Input() private criteria: Criterium[];
 	error: any;
+	testCriteria: Observable<any>;
 
 	/*Get the element reference from angular
 	 * and interface with D3*/
@@ -56,12 +58,22 @@ export class Hierarchy {
 				.catch(error => this.error = error);
 	}	
 
+	getRootTest(id: number): Observable<Criterium[]> {
+		return this.criteriaService
+				.getCriteriaTest(id);
+	}	
+
+
 	ngOnInit(): void {
 		this.setup();
-		this.getRoot()
-				.then(() => {
-								this.render()
-
+		this.getRootTest(1)
+				.subscribe(criteria => {
+					console.log(criteria);
+					this.root = D3.stratify()
+							.id(d => d.id)
+							.parentId(d => d.parent_id)
+							(criteria);
+					this.render();
 				});
 	}
 

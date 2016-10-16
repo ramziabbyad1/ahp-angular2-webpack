@@ -17,7 +17,7 @@ import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import { XHRBackend } from '@angular/http';
 import { InMemoryWebApiModule } from 'angular2-in-memory-web-api';
 //import { InMemoryBackendService, SEED_DATA } from 'angular2-in-memory-web-api';
-import { SEED_DATA } from 'angular2-in-memory-web-api';
+//import { SEED_DATA } from 'angular2-in-memory-web-api';
 import { InMemoryData }               from './in-memory-db/in-memory-data';
 import { Criteria }      from './components/criteria/criteria';
 import { Comparisons }      from './components/criteria/comparisons';
@@ -44,7 +44,7 @@ import { PieChart }								from './components/charts/pie-chart';
 		PieChart
 	],
   imports     : [
-		InMemoryWebApiModule.forRoot(InMemoryData), 
+		//InMemoryWebApiModule.forRoot(InMemoryData), 
 		BrowserModule, 
 		FormsModule, 
 		HttpModule, 

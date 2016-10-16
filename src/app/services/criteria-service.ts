@@ -1,5 +1,6 @@
 import { Injectable }    from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
+import { Headers, Http, Jsonp, Response, URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -9,13 +10,32 @@ import { Criterium } from '../models/criterium';
 export class CriteriaService {
 
   private criteriaUrl = 'app/criteria';  // URL to web api
-  constructor(private http: Http) { }
+	private criteriaUrlTest = 'http://blog.app/ahpda';
+	private subject;
+  constructor(private http: Http, private jsonp: Jsonp) { }
 
   getCriteria(): Promise<Criterium[]> {
     return this.http.get(this.criteriaUrl)
                .toPromise()
                .then(response => response.json().data as Criterium[])
                .catch(this.handleError);
+  }
+
+  getCriteriaTest(id: number):Observable<Criterium[]>  {
+    let params = new URLSearchParams();
+
+		params.set('callback', 'JSONP_CALLBACK');
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+    this.subject= this.jsonp
+							.get(this.criteriaUrlTest+`/${id}`, {headers: headers, search: params})
+              .map((response: Response) => {
+									return response.json() as Criterium[];
+							})
+              .catch(this.handleErrorJsonp);
+		console.log(this.subject);
+		return this.subject;
+		//this.subject.subscribe(r => console.log(r));
   }
 
   getCriterium(id: number): Promise<Criterium> {
@@ -68,4 +88,10 @@ export class CriteriaService {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
+ 	private handleErrorJsonp(error: any) {
+ 	   let errMsg = (error.message) ? error.message :
+ 	     error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+ 	   console.error(errMsg); // log to console instead
+ 	   return Observable.throw(errMsg);
+ 	 }
 }

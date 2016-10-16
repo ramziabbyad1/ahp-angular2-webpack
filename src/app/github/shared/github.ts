@@ -29,8 +29,6 @@ export class Github {
 		params.set('callback', 'JSONP_CALLBACK');
 
     let url = `https://api.github.com/${ path }`;
-		console.log('url');
-		console.log(url);
     return this.jsonp.get(url, {search: params})
       .map((res: Response) => res.json().data.items as Repo[])
 			.catch(this.handleError);
